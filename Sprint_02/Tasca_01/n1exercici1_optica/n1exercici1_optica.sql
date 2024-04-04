@@ -1,8 +1,13 @@
 -- MySQL Workbench Forward Engineering
 
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
 -- -----------------------------------------------------
 -- Schema n1exercici1_optica
 -- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `n1exercici1_optica` ;
 
 -- -----------------------------------------------------
 -- Schema n1exercici1_optica
@@ -13,6 +18,8 @@ USE `n1exercici1_optica` ;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`PAIS`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`PAIS` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`PAIS` (
   `id_pais` INT NOT NULL AUTO_INCREMENT,
   `nom` VARCHAR(45) NOT NULL,
@@ -23,6 +30,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`ADREÇA`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`ADREÇA` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ADREÇA` (
   `id_adreça` INT NOT NULL AUTO_INCREMENT,
   `carrer` VARCHAR(45) NOT NULL,
@@ -33,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ADREÇA` (
   `codi_postal` INT NOT NULL,
   `id_pais` INT NOT NULL,
   PRIMARY KEY (`id_adreça`, `id_pais`),
-  INDEX `fk_ADREÇA_PAIS1_idx` (`id_pais` ASC),
+  INDEX `fk_ADREÇA_PAIS1_idx` (`id_pais` ASC) ,
   CONSTRAINT `fk_ADREÇA_PAIS1`
     FOREIGN KEY (`id_pais`)
     REFERENCES `n1exercici1_optica`.`PAIS` (`id_pais`)
@@ -45,6 +54,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`PROVEIDOR`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`PROVEIDOR` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`PROVEIDOR` (
   `id_proveidor` INT NOT NULL AUTO_INCREMENT,
   `nom` VARCHAR(45) NOT NULL,
@@ -53,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`PROVEIDOR` (
   `NIF` VARCHAR(8) NOT NULL,
   `id_adreça` INT NOT NULL,
   PRIMARY KEY (`id_proveidor`, `id_adreça`),
-  UNIQUE INDEX `NIF_UNIQUE` (`NIF` ASC),
+  UNIQUE INDEX `NIF_UNIQUE` (`NIF` ASC) ,
   INDEX `fk_PROVE{IDOR_ADREÇA_idx` (`id_adreça` ASC) ,
   CONSTRAINT `fk_PROVE{IDOR_ADREÇA`
     FOREIGN KEY (`id_adreça`)
@@ -66,12 +77,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`CLIENT`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`CLIENT` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`CLIENT` (
   `id_client` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(45) NOT NULL,
   `telefon` INT NOT NULL,
   `correu_electronic` VARCHAR(45) NOT NULL,
   `data_registre` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
-  `client_recomana` INT NOT NULL,
+  `client_recomana` INT NULL,
   `id_adreça` INT NOT NULL,
   PRIMARY KEY (`id_client`, `id_adreça`),
   INDEX `fk_CLIENT_CLIENT1_idx` (`client_recomana` ASC) ,
@@ -92,6 +106,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`EMPLEAT`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`EMPLEAT` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`EMPLEAT` (
   `id_empleat` INT NOT NULL AUTO_INCREMENT,
   `nom` VARCHAR(45) NOT NULL,
@@ -109,6 +125,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`VENDA`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`VENDA` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`VENDA` (
   `id_venda` INT NOT NULL AUTO_INCREMENT,
   `preu` DOUBLE NOT NULL,
@@ -133,6 +151,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`MARCA`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`MARCA` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`MARCA` (
   `id_marca` INT NOT NULL AUTO_INCREMENT,
   `nom` VARCHAR(45) NOT NULL,
@@ -150,6 +170,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`ULLERA`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`ULLERA` ;
+
 CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ULLERA` (
   `id_ullera` INT NOT NULL AUTO_INCREMENT,
   `graduacio_izq` VARCHAR(45) NULL,
@@ -176,4 +198,101 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ULLERA` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`PAIS`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`PAIS` (`id_pais`, `nom`) VALUES (1, 'ESPANYA');
+INSERT INTO `n1exercici1_optica`.`PAIS` (`id_pais`, `nom`) VALUES (2 , 'FRANÇA');
+INSERT INTO `n1exercici1_optica`.`PAIS` (`id_pais`, `nom`) VALUES (3, 'PORTUGAL');
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`ADREÇA`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`ADREÇA` (`id_adreça`, `carrer`, `numero`, `piso`, `puerta`, `ciudad`, `codi_postal`, `id_pais`) VALUES (1, 'carrer 1', 1, 1, 1, 'BARCELONA', 08025, 1);
+INSERT INTO `n1exercici1_optica`.`ADREÇA` (`id_adreça`, `carrer`, `numero`, `piso`, `puerta`, `ciudad`, `codi_postal`, `id_pais`) VALUES (2, 'carrer2', 2, 2, 2, 'PARIS', 15466, 2);
+INSERT INTO `n1exercici1_optica`.`ADREÇA` (`id_adreça`, `carrer`, `numero`, `piso`, `puerta`, `ciudad`, `codi_postal`, `id_pais`) VALUES (3, 'carrer3', 3, 3, 3, 'MADRID', 33333, 1);
+INSERT INTO `n1exercici1_optica`.`ADREÇA` (`id_adreça`, `carrer`, `numero`, `piso`, `puerta`, `ciudad`, `codi_postal`, `id_pais`) VALUES (4, 'carrer4', 4, 4, 4, 'LISBOA', 44444, 3);
+INSERT INTO `n1exercici1_optica`.`ADREÇA` (`id_adreça`, `carrer`, `numero`, `piso`, `puerta`, `ciudad`, `codi_postal`, `id_pais`) VALUES (5, 'carrer5', 5, 5, 5, 'BARCELONA', 55555, 1);
+INSERT INTO `n1exercici1_optica`.`ADREÇA` (`id_adreça`, `carrer`, `numero`, `piso`, `puerta`, `ciudad`, `codi_postal`, `id_pais`) VALUES (6, 'carrer6', 6, 6, 6, 'BARCELONA', 66666, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`PROVEIDOR`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`PROVEIDOR` (`id_proveidor`, `nom`, `Telefon`, `Fax`, `NIF`, `id_adreça`) VALUES (1, 'PROVEIDOR_1', 1234567, 1123456, '1324567D', 1);
+INSERT INTO `n1exercici1_optica`.`PROVEIDOR` (`id_proveidor`, `nom`, `Telefon`, `Fax`, `NIF`, `id_adreça`) VALUES (2, 'PROVEIDOR_2', 5647892, 3264785, '4685452P', 2);
+INSERT INTO `n1exercici1_optica`.`PROVEIDOR` (`id_proveidor`, `nom`, `Telefon`, `Fax`, `NIF`, `id_adreça`) VALUES (3, 'PROVEIDOR_3', 4567896, 5864852, '4123764L', 3);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`CLIENT`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`CLIENT` (`id_client`, `nom`, `telefon`, `correu_electronic`, `data_registre`, `client_recomana`, `id_adreça`) VALUES (1, 'Jose', 4564789, 'fhjdhf@jkf.com', NULL, NULL, 4);
+INSERT INTO `n1exercici1_optica`.`CLIENT` (`id_client`, `nom`, `telefon`, `correu_electronic`, `data_registre`, `client_recomana`, `id_adreça`) VALUES (2, 'Martina', 4546556, 'fdas@gmail.com', NULL, 1, 6);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`EMPLEAT`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`EMPLEAT` (`id_empleat`, `nom`, `id_adreça`) VALUES (1, 'Ramon', 5);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`VENDA`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`VENDA` (`id_venda`, `preu`, `id_client`, `id_empleat`) VALUES (1, 67, 2, 1);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`MARCA`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`MARCA` (`id_marca`, `nom`, `id_proveidor`) VALUES (1, 'rayban', 1);
+INSERT INTO `n1exercici1_optica`.`MARCA` (`id_marca`, `nom`, `id_proveidor`) VALUES (2, 'tous', 1);
+INSERT INTO `n1exercici1_optica`.`MARCA` (`id_marca`, `nom`, `id_proveidor`) VALUES (3, 'BG', 2);
+INSERT INTO `n1exercici1_optica`.`MARCA` (`id_marca`, `nom`, `id_proveidor`) VALUES (4, 'XX', 3);
+
+COMMIT;
+
+
+-- -----------------------------------------------------
+-- Data for table `n1exercici1_optica`.`ULLERA`
+-- -----------------------------------------------------
+START TRANSACTION;
+USE `n1exercici1_optica`;
+INSERT INTO `n1exercici1_optica`.`ULLERA` (`id_ullera`, `graduacio_izq`, `graduacio_der`, `muntura`, `color_muntura`, `color_vidre_der`, `color_vidre_izq`, `preu`, `id_venda`, `id_marca`, `id_proveidor`) VALUES (1, '3', '1', 'flotant', 'verd', 'no', 'no', 67, 1, 2, 1);
+
+COMMIT;
 
