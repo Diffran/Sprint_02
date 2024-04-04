@@ -1,9 +1,5 @@
 -- MySQL Workbench Forward Engineering
 
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
 -- -----------------------------------------------------
 -- Schema n1exercici1_optica
 -- -----------------------------------------------------
@@ -37,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ADREÇA` (
   `codi_postal` INT NOT NULL,
   `id_pais` INT NOT NULL,
   PRIMARY KEY (`id_adreça`, `id_pais`),
-  INDEX `fk_ADREÇA_PAIS1_idx` (`id_pais` ASC) VISIBLE,
+  INDEX `fk_ADREÇA_PAIS1_idx` (`id_pais` ASC),
   CONSTRAINT `fk_ADREÇA_PAIS1`
     FOREIGN KEY (`id_pais`)
     REFERENCES `n1exercici1_optica`.`PAIS` (`id_pais`)
@@ -57,8 +53,8 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`PROVEIDOR` (
   `NIF` VARCHAR(8) NOT NULL,
   `id_adreça` INT NOT NULL,
   PRIMARY KEY (`id_proveidor`, `id_adreça`),
-  UNIQUE INDEX `NIF_UNIQUE` (`NIF` ASC) VISIBLE,
-  INDEX `fk_PROVE{IDOR_ADREÇA_idx` (`id_adreça` ASC) VISIBLE,
+  UNIQUE INDEX `NIF_UNIQUE` (`NIF` ASC),
+  INDEX `fk_PROVE{IDOR_ADREÇA_idx` (`id_adreça` ASC) ,
   CONSTRAINT `fk_PROVE{IDOR_ADREÇA`
     FOREIGN KEY (`id_adreça`)
     REFERENCES `n1exercici1_optica`.`ADREÇA` (`id_adreça`)
@@ -78,8 +74,8 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`CLIENT` (
   `client_recomana` INT NOT NULL,
   `id_adreça` INT NOT NULL,
   PRIMARY KEY (`id_client`, `id_adreça`),
-  INDEX `fk_CLIENT_CLIENT1_idx` (`client_recomana` ASC) VISIBLE,
-  INDEX `fk_CLIENT_ADREÇA1_idx` (`id_adreça` ASC) VISIBLE,
+  INDEX `fk_CLIENT_CLIENT1_idx` (`client_recomana` ASC) ,
+  INDEX `fk_CLIENT_ADREÇA1_idx` (`id_adreça` ASC) ,
   CONSTRAINT `fk_CLIENT_CLIENT1`
     FOREIGN KEY (`client_recomana`)
     REFERENCES `n1exercici1_optica`.`CLIENT` (`id_client`)
@@ -101,7 +97,7 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`EMPLEAT` (
   `nom` VARCHAR(45) NOT NULL,
   `id_adreça` INT NOT NULL,
   PRIMARY KEY (`id_empleat`, `id_adreça`),
-  INDEX `fk_EMPLEAT_ADREÇA1_idx` (`id_adreça` ASC) VISIBLE,
+  INDEX `fk_EMPLEAT_ADREÇA1_idx` (`id_adreça` ASC) ,
   CONSTRAINT `fk_EMPLEAT_ADREÇA1`
     FOREIGN KEY (`id_adreça`)
     REFERENCES `n1exercici1_optica`.`ADREÇA` (`id_adreça`)
@@ -119,8 +115,8 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`VENDA` (
   `id_client` INT NOT NULL,
   `id_empleat` INT NOT NULL,
   PRIMARY KEY (`id_venda`, `id_client`, `id_empleat`),
-  INDEX `fk_VENDA_CLIENT1_idx` (`id_client` ASC) VISIBLE,
-  INDEX `fk_VENDA_EMPLEAT1_idx` (`id_empleat` ASC) VISIBLE,
+  INDEX `fk_VENDA_CLIENT1_idx` (`id_client` ASC) ,
+  INDEX `fk_VENDA_EMPLEAT1_idx` (`id_empleat` ASC) ,
   CONSTRAINT `fk_VENDA_CLIENT1`
     FOREIGN KEY (`id_client`)
     REFERENCES `n1exercici1_optica`.`CLIENT` (`id_client`)
@@ -142,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`MARCA` (
   `nom` VARCHAR(45) NOT NULL,
   `id_proveidor` INT NOT NULL,
   PRIMARY KEY (`id_marca`, `id_proveidor`),
-  INDEX `fk_MARCA_PROVEIDOR1_idx` (`id_proveidor` ASC) VISIBLE,
+  INDEX `fk_MARCA_PROVEIDOR1_idx` (`id_proveidor` ASC) ,
   CONSTRAINT `fk_MARCA_PROVEIDOR1`
     FOREIGN KEY (`id_proveidor`)
     REFERENCES `n1exercici1_optica`.`PROVEIDOR` (`id_proveidor`)
@@ -167,8 +163,8 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ULLERA` (
   `id_marca` INT NOT NULL,
   `id_proveidor` INT NOT NULL,
   PRIMARY KEY (`id_ullera`, `id_marca`, `id_proveidor`, `id_venda`),
-  INDEX `fk_ULLERA_VENDA1_idx` (`id_venda` ASC) VISIBLE,
-  INDEX `fk_ULLERA_MARCA2_idx` (`id_marca` ASC, `id_proveidor` ASC) VISIBLE,
+  INDEX `fk_ULLERA_VENDA1_idx` (`id_venda` ASC) ,
+  INDEX `fk_ULLERA_MARCA2_idx` (`id_marca` ASC, `id_proveidor` ASC) ,
   CONSTRAINT `fk_ULLERA_VENDA1`
     FOREIGN KEY (`id_venda`)
     REFERENCES `n1exercici1_optica`.`VENDA` (`id_venda`)
@@ -181,7 +177,3 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ULLERA` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
