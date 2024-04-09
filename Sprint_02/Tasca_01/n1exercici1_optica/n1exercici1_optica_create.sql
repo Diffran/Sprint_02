@@ -72,6 +72,49 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `n1exercici1_optica`.`MARCA`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`MARCA` ;
+
+CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`MARCA` (
+  `id_marca` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(45) NOT NULL,
+  `id_proveidor` INT NOT NULL,
+  PRIMARY KEY (`id_marca`, `id_proveidor`),
+  INDEX `fk_MARCA_PROVEIDOR1_idx` (`id_proveidor` ASC) ,
+  CONSTRAINT `fk_MARCA_PROVEIDOR1`
+    FOREIGN KEY (`id_proveidor`)
+    REFERENCES `n1exercici1_optica`.`PROVEIDOR` (`id_proveidor`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `n1exercici1_optica`.`ULLERA`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici1_optica`.`ULLERA` ;
+
+CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ULLERA` (
+  `id_ullera` INT NOT NULL AUTO_INCREMENT,
+  `graduacio_izq` VARCHAR(45) NULL,
+  `graduacio_der` VARCHAR(45) NULL,
+  `muntura` ENUM('flotant', 'pasta', 'metalica') NOT NULL,
+  `color_muntura` VARCHAR(45) NOT NULL,
+  `color_vidre` VARCHAR(45) NOT NULL,
+  `preu` DOUBLE NULL,
+  `id_marca` INT NOT NULL,
+  PRIMARY KEY (`id_ullera`, `id_marca`),
+  INDEX `fk_ULLERA_MARCA2_idx` (`id_marca` ASC) ,
+  CONSTRAINT `fk_ULLERA_MARCA2`
+    FOREIGN KEY (`id_marca`)
+    REFERENCES `n1exercici1_optica`.`MARCA` (`id_marca`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `n1exercici1_optica`.`CLIENT`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `n1exercici1_optica`.`CLIENT` ;
@@ -130,9 +173,11 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`VENDA` (
   `data` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `id_client` INT NOT NULL,
   `id_empleat` INT NOT NULL,
-  PRIMARY KEY (`id_venda`, `id_client`, `id_empleat`),
+  `id_ullera` INT NOT NULL,
+  PRIMARY KEY (`id_venda`, `id_client`, `id_empleat`, `id_ullera`),
   INDEX `fk_VENDA_CLIENT1_idx` (`id_client` ASC) ,
   INDEX `fk_VENDA_EMPLEAT1_idx` (`id_empleat` ASC) ,
+  INDEX `fk_VENDA_ULLERA1_idx` (`id_ullera` ASC) ,
   CONSTRAINT `fk_VENDA_CLIENT1`
     FOREIGN KEY (`id_client`)
     REFERENCES `n1exercici1_optica`.`CLIENT` (`id_client`)
@@ -142,56 +187,13 @@ CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`VENDA` (
     FOREIGN KEY (`id_empleat`)
     REFERENCES `n1exercici1_optica`.`EMPLEAT` (`id_empleat`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `n1exercici1_optica`.`MARCA`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `n1exercici1_optica`.`MARCA` ;
-
-CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`MARCA` (
-  `id_marca` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(45) NOT NULL,
-  `id_proveidor` INT NOT NULL,
-  PRIMARY KEY (`id_marca`, `id_proveidor`),
-  INDEX `fk_MARCA_PROVEIDOR1_idx` (`id_proveidor` ASC) ,
-  CONSTRAINT `fk_MARCA_PROVEIDOR1`
-    FOREIGN KEY (`id_proveidor`)
-    REFERENCES `n1exercici1_optica`.`PROVEIDOR` (`id_proveidor`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `n1exercici1_optica`.`ULLERA`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `n1exercici1_optica`.`ULLERA` ;
-
-CREATE TABLE IF NOT EXISTS `n1exercici1_optica`.`ULLERA` (
-  `id_ullera` INT NOT NULL AUTO_INCREMENT,
-  `graduacio_izq` VARCHAR(45) NULL,
-  `graduacio_der` VARCHAR(45) NULL,
-  `muntura` ENUM('flotant', 'pasta', 'metalica') NOT NULL,
-  `color_muntura` VARCHAR(45) NOT NULL,
-  `color_vidre` VARCHAR(45) NOT NULL,
-  `preu` DOUBLE NULL,
-  `id_venda` INT ,
-  `id_marca` INT NOT NULL,
-  PRIMARY KEY (`id_ullera`, `id_marca`),
-  INDEX `fk_ULLERA_VENDA1_idx` (`id_venda` ASC) ,
-  INDEX `fk_ULLERA_MARCA2_idx` (`id_marca` ASC) ,
-  CONSTRAINT `fk_ULLERA_VENDA1`
-    FOREIGN KEY (`id_venda`)
-    REFERENCES `n1exercici1_optica`.`VENDA` (`id_venda`)
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_ULLERA_MARCA2`
-    FOREIGN KEY (`id_marca`)
-    REFERENCES `n1exercici1_optica`.`MARCA` (`id_marca`)
+  CONSTRAINT `fk_VENDA_ULLERA1`
+    FOREIGN KEY (`id_ullera`)
+    REFERENCES `n1exercici1_optica`.`ULLERA` (`id_ullera`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
 
