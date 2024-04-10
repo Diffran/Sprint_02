@@ -1,4 +1,3 @@
-
 INSERT INTO PROVINCIA (nom) VALUES 
 ('Barcelona'),
 ('Girona'),
@@ -74,8 +73,8 @@ INSERT INTO CLIENT (nom, cogoms, telefon, id_adreça) VALUES
 
 
 INSERT INTO HAMBURGUESA (id_hamburguesa, nom, descripcio, imatge, preu) VALUES 
-(1, 'Classic Burger', 'Hamburguesa de carne de vacuno con lechuga, tomate, cebolla y salsa especial.', NULL, 8.99),
-(2, 'Bacon Cheeseburger', 'Hamburguesa de carne de vacuno con queso cheddar, bacon, lechuga, tomate y salsa de barbacoa.', NULL, 10.99);
+(1, 'Classic Burger', 'Hamburguesa con lechuga, tomate, cebolla', NULL, 8.99),
+(2, 'Bacon Cheeseburger', 'Hamburguesa con bacon, lechuga, tomate', NULL, 10.99);
 
 
 INSERT INTO BEGUDA (id_beguda, nom, descripcio, imatge, preu) VALUES 
@@ -91,9 +90,9 @@ INSERT INTO CATEGORIA (nom) VALUES
 -- Crear 4 pizzas en la tabla PIZZA
 INSERT INTO PIZZA (id_pizza, nom, descripcio, imatge, preu, id_categoria) VALUES 
 (1, 'Margarita', 'Tomate, mozzarella y albahaca.', NULL, 8.99, 2), -- Categoría Blanca
-(2, 'Hawaiana', 'Tomate, mozzarella, jamón cocido y piña.', NULL, 9.99, 2), -- Categoría Blanca
-(3, 'Vegetariana', 'Tomate, mozzarella, champiñones, pimientos, cebolla y aceitunas.', NULL, 10.99, 1), -- Categoría Vegetariana
-(4, 'Cuatro Quesos', 'Tomate, mozzarella, gorgonzola, provolone y parmesano.', NULL, 11.99, 2); -- Categoría Blanca
+(2, 'Hawaiana', ' jamón cocido y piña.', NULL, 9.99, 2), -- Categoría Blanca
+(3, 'Vegetariana', 'champiñones, pimientos, cebolla', NULL, 10.99, 1), -- Categoría Vegetariana
+(4, 'Cuatro Quesos', 'gorgonzola, provolone y parmesano.', NULL, 11.99, 2); -- Categoría Blanca
 
 
 INSERT INTO COMANDA (data, tipus, quantitat_pizza, quantitat_hamburguesa, quantitat_beguda, preu_total, id_botiga, id_client) VALUES 
@@ -113,6 +112,41 @@ INSERT INTO COMANDA (data, tipus, quantitat_pizza, quantitat_hamburguesa, quanti
 ('2023-05-10 17:30:00', 'domicili', 1, 0, 2, 15.99, 1, 14),
 ('2022-02-10 18:30:00', 'botiga', 1, 2, 1, 25.99, 1, 10),
 ('2022-08-05 20:00:00', 'domicili', 3, 0, 2, 28.95, 2, 10);
+
+
+
+INSERT INTO LINEA_COMANDA (id_comanda,id_hamburguesa, id_beguda, id_pizza) VALUES
+(5, NULL, 1, NULL), 
+( 1, NULL, 3, NULL),  
+( 2,NULL, 2, NULL),   
+( 5,NULL, NULL, 3),    
+( 6,NULL, 1, NULL),
+( 7,NULL, 2, NULL), 
+( 2,NULL, 3, NULL),    
+( 8,2, NULL, NULL), 
+( 9,NULL, 3, NULL),
+( 10,NULL, 2, NULL),    
+( 11,NULL, NULL, 4),   
+( 11,NULL, NULL, 2),    
+( 3,NULL, 2, NULL), 
+( 12,2, NULL, NULL), 
+( 13,NULL, 1, NULL), 
+( 13, NULL, 1, NULL);    
+
+
+INSERT INTO REPARTO (lliurament, id_comanda, id_empleat) VALUES
+('2023-04-15 13:30:00', 3, 6),
+('2023-04-16 11:45:00', 6, 6),
+('2023-04-17 14:20:00', 7, 2),
+('2023-04-18 17:00:00', 9, 7),
+('2023-04-19 12:15:00', 10, 2),
+('2023-04-20 10:30:00', 11, 2),
+('2023-04-21 09:45:00', 12, 2),
+('2023-04-22 16:20:00', 14, 7),
+('2023-04-23 13:50:00', 15, 7),
+('2023-04-24 15:00:00', 16, 2);
+
+
 
 
 
