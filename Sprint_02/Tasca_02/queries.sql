@@ -1,3 +1,25 @@
 SELECT nombre FROM producto;
 SELECT nombre, precio FROM producto;
 SELECT * FROM producto;
+-- TODO arrodonir a 2 decimals
+select nombre, precio, precio*1.07  from producto;
+select nombre as "nom producte", precio as euros, precio*1.07 as dolars from producto;
+select upper(nombre), precio from producto;
+select lower(nombre), precio from producto;
+select nombre, upper(substring(nombre,1,2)) as "primeres lletres" from producto;
+select nombre, round(precio,0) as "preu arrodonit" from producto; 
+select nombre, truncate(precio,0) as "preu truncate" from producto;
+select  f.codigo from fabricante f right join producto p on f.codigo = p.codigo_fabricante; 
+select distinct f.codigo from fabricante f right join producto p on f.codigo = p.codigo_fabricante; 
+select nombre from fabricante order by nombre asc;
+select nombre from fabricante order by nombre desc;
+select nombre, precio from producto order by nombre asc, precio desc;
+select * from fabricante limit 5;
+select * from fabricante limit 2 offset 3;
+select nombre, precio from producto order by precio asc limit 1;
+select nombre, precio from producto order by precio desc limit 1;
+select nombre from producto where codigo_fabricante=2;
+select p.nombre, p.precio, f.nombre from producto p  join fabricante f on p.codigo_fabricante = f.codigo; 
+select p.nombre, p.precio, f.nombre from producto p  join fabricante f on p.codigo_fabricante = f.codigo order by f.nombre; 
+select p.codigo as codigo_fabricante, p.nombre as producto, f.codigo as codigo_fabricante, f.nombre as fabricante from producto p  join fabricante f on p.codigo_fabricante = f.codigo; 
+select  min(precio) from producto; 
