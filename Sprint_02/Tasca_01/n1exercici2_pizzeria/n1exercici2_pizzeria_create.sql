@@ -1,12 +1,12 @@
 -- MySQL Workbench Forward Engineering
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema n1exercici2_pizzeria
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `n1exercici2_pizzeria` ;
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema n1exercici2_pizzeria
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `n1exercici2_pizzeria` DEFAULT CHARACTER SET utf8 ;
 USE `n1exercici2_pizzeria` ;
@@ -55,12 +55,11 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`ADREÇA` (
   `porta` INT NOT NULL,
   `codi_postal` INT NOT NULL,
   `id_localitat` INT NOT NULL,
-  `id_provincia` INT NOT NULL,
-  PRIMARY KEY (`id_adreça`, `id_localitat`, `id_provincia`),
-  INDEX `fk_ADREÇA_LOCALITAT1_idx` (`id_localitat` ASC, `id_provincia` ASC) ,
+  PRIMARY KEY (`id_adreça`, `id_localitat`),
+  INDEX `fk_ADREÇA_LOCALITAT1_idx` (`id_localitat` ASC) ,
   CONSTRAINT `fk_ADREÇA_LOCALITAT1`
-    FOREIGN KEY (`id_localitat` , `id_provincia`)
-    REFERENCES `n1exercici2_pizzeria`.`LOCALITAT` (`id_localitat` , `id_provincia`)
+    FOREIGN KEY (`id_localitat`)
+    REFERENCES `n1exercici2_pizzeria`.`LOCALITAT` (`id_localitat`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -77,13 +76,11 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`CLIENT` (
   `cogoms` VARCHAR(45) NOT NULL,
   `telefon` INT NOT NULL,
   `id_adreça` INT NOT NULL,
-  `id_localitat` INT NOT NULL,
-  `id_provincia` INT NOT NULL,
-  PRIMARY KEY (`id_client`, `id_adreça`, `id_localitat`, `id_provincia`),
-  INDEX `fk_CLIENT_ADREÇA1_idx` (`id_adreça` ASC, `id_localitat` ASC, `id_provincia` ASC) ,
+  PRIMARY KEY (`id_client`, `id_adreça`),
+  INDEX `fk_CLIENT_ADREÇA1_idx` (`id_adreça` ASC) ,
   CONSTRAINT `fk_CLIENT_ADREÇA1`
-    FOREIGN KEY (`id_adreça` , `id_localitat` , `id_provincia`)
-    REFERENCES `n1exercici2_pizzeria`.`ADREÇA` (`id_adreça` , `id_localitat` , `id_provincia`)
+    FOREIGN KEY (`id_adreça`)
+    REFERENCES `n1exercici2_pizzeria`.`ADREÇA` (`id_adreça`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -98,13 +95,11 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`BOTIGA` (
   `id_botiga` INT NOT NULL AUTO_INCREMENT,
   `nom` VARCHAR(45) NOT NULL,
   `id_adreça` INT NOT NULL,
-  `id_localitat` INT NOT NULL,
-  `id_provincia` INT NOT NULL,
-  PRIMARY KEY (`id_botiga`, `id_adreça`, `id_localitat`, `id_provincia`),
-  INDEX `fk_BOTIGA_ADREÇA1_idx` (`id_adreça` ASC, `id_localitat` ASC, `id_provincia` ASC) ,
+  PRIMARY KEY (`id_botiga`, `id_adreça`),
+  INDEX `fk_BOTIGA_ADREÇA1_idx` (`id_adreça` ASC) ,
   CONSTRAINT `fk_BOTIGA_ADREÇA1`
-    FOREIGN KEY (`id_adreça` , `id_localitat` , `id_provincia`)
-    REFERENCES `n1exercici2_pizzeria`.`ADREÇA` (`id_adreça` , `id_localitat` , `id_provincia`)
+    FOREIGN KEY (`id_adreça`)
+    REFERENCES `n1exercici2_pizzeria`.`ADREÇA` (`id_adreça`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -124,14 +119,18 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`COMANDA` (
   `quantitat_beguda` INT NOT NULL,
   `preu_total` DOUBLE NOT NULL,
   `id_botiga` INT NOT NULL,
-  `id_adreça` INT NOT NULL,
-  `id_localitat` INT NOT NULL,
-  `id_provincia` INT NOT NULL,
-  PRIMARY KEY (`id_comanda`),
-  INDEX `fk_COMANDA_BOTIGA1_idx` (`id_botiga` ASC, `id_adreça` ASC, `id_localitat` ASC, `id_provincia` ASC) ,
+  `id_client` INT NOT NULL,
+  PRIMARY KEY (`id_comanda`, `id_client`),
+  INDEX `fk_COMANDA_BOTIGA1_idx` (`id_botiga` ASC) ,
+  INDEX `fk_COMANDA_CLIENT1_idx` (`id_client` ASC) ,
   CONSTRAINT `fk_COMANDA_BOTIGA1`
-    FOREIGN KEY (`id_botiga` , `id_adreça` , `id_localitat` , `id_provincia`)
-    REFERENCES `n1exercici2_pizzeria`.`BOTIGA` (`id_botiga` , `id_adreça` , `id_localitat` , `id_provincia`)
+    FOREIGN KEY (`id_botiga`)
+    REFERENCES `n1exercici2_pizzeria`.`BOTIGA` (`id_botiga`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_COMANDA_CLIENT1`
+    FOREIGN KEY (`id_client`)
+    REFERENCES `n1exercici2_pizzeria`.`CLIENT` (`id_client`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -159,12 +158,12 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`BEGUDA` ;
 
 CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`BEGUDA` (
-  `id_hamburguesa` INT NOT NULL,
+  `id_beguda` INT NOT NULL,
   `nom` VARCHAR(45) NOT NULL,
   `descripcio` VARCHAR(45) NOT NULL,
   `imatge` BLOB NULL,
   `preu` DOUBLE NOT NULL,
-  PRIMARY KEY (`id_hamburguesa`),
+  PRIMARY KEY (`id_beguda`),
   UNIQUE INDEX `nom_UNIQUE` (`nom` ASC) )
 ENGINE = InnoDB;
 
@@ -212,10 +211,10 @@ DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`LINEA_COMANDA` ;
 CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`LINEA_COMANDA` (
   `id_detalls` INT NOT NULL AUTO_INCREMENT,
   `id_comanda` INT NOT NULL,
-  `id_hamburguesa` INT NOT NULL,
-  `id_beguda` INT NOT NULL,
-  `id_pizza` INT NOT NULL,
-  `id_categoria` INT NOT NULL,
+  `id_hamburguesa` INT NULL,
+  `id_beguda` INT NULL,
+  `id_pizza` INT NULL,
+  `id_categoria` INT NULL,
   PRIMARY KEY (`id_detalls`, `id_comanda`),
   INDEX `fk_LINEA_COMANDA_COMANDA1_idx` (`id_comanda` ASC) ,
   INDEX `fk_LINEA_COMANDA_HAMBURGUESA1_idx` (`id_hamburguesa` ASC) ,
@@ -233,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`LINEA_COMANDA` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_LINEA_COMANDA_BEGUDA1`
     FOREIGN KEY (`id_beguda`)
-    REFERENCES `n1exercici2_pizzeria`.`BEGUDA` (`id_hamburguesa`)
+    REFERENCES `n1exercici2_pizzeria`.`BEGUDA` (`id_beguda`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_LINEA_COMANDA_PIZZA1`
@@ -258,13 +257,17 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`EMPLEAT` (
   `posicio` ENUM('cuiner', 'repartidor') NOT NULL,
   `id_botiga` INT NOT NULL,
   `id_adreça` INT NOT NULL,
-  `id_localitat` INT NOT NULL,
-  `id_provincia` INT NOT NULL,
-  PRIMARY KEY (`id_empleat`, `id_botiga`, `id_adreça`, `id_localitat`, `id_provincia`),
-  INDEX `fk_EMPLEAT_BOTIGA1_idx` (`id_botiga` ASC, `id_adreça` ASC, `id_localitat` ASC, `id_provincia` ASC) ,
+  PRIMARY KEY (`id_empleat`, `id_botiga`, `id_adreça`),
+  INDEX `fk_EMPLEAT_BOTIGA1_idx` (`id_botiga` ASC) ,
+  INDEX `fk_EMPLEAT_ADREÇA1_idx` (`id_adreça` ASC) ,
   CONSTRAINT `fk_EMPLEAT_BOTIGA1`
-    FOREIGN KEY (`id_botiga` , `id_adreça` , `id_localitat` , `id_provincia`)
-    REFERENCES `n1exercici2_pizzeria`.`BOTIGA` (`id_botiga` , `id_adreça` , `id_localitat` , `id_provincia`)
+    FOREIGN KEY (`id_botiga`)
+    REFERENCES `n1exercici2_pizzeria`.`BOTIGA` (`id_botiga`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_EMPLEAT_ADREÇA1`
+    FOREIGN KEY (`id_adreça`)
+    REFERENCES `n1exercici2_pizzeria`.`ADREÇA` (`id_adreça`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -296,14 +299,4 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`REPARTO` (
 ENGINE = InnoDB;
 
 
-
--- -----------------------------------------------------
--- Data for table `n1exercici2_pizzeria`.`PROVINCIA`
--- -----------------------------------------------------
-START TRANSACTION;
-USE `n1exercici2_pizzeria`;
-INSERT INTO `n1exercici2_pizzeria`.`PROVINCIA` (`id_provincia`, `nom`) VALUES (1, 'BARCELONA');
-INSERT INTO `n1exercici2_pizzeria`.`PROVINCIA` (`id_provincia`, `nom`) VALUES (2, 'GIRONA');
-
-COMMIT;
 
