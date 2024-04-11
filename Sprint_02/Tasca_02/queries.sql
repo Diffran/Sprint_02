@@ -31,4 +31,23 @@ select p.*, f.nombre from producto p join fabricante f on p.codigo_fabricante = 
 select p.nombre as producte , p.precio, f.nombre as fabricante from producto p join fabricante f on p.codigo_fabricante = f.codigo where f.nombre like "%e";
 select p.nombre as producte , p.precio, f.nombre as fabricante from producto p right join fabricante f on p.codigo_fabricante = f.codigo where f.nombre like "%w%";
 select p.nombre as producte, p.precio, f.nombre as fabricante from producto p join fabricante f on p.codigo_fabricante = f.codigo where p.precio >=180 order by p.precio desc, p.nombre asc;
-select f.codigo, f.nombre from fabricante f right join producto p on f.codigo = p.codigo_fabricante;
+select distinct f.codigo, f.nombre from fabricante f right join producto p on f.codigo = p.codigo_fabricante;
+select  f.codigo, f.nombre, p.* from fabricante f  left join  producto p on f.codigo = p.codigo_fabricante order by f.codigo;
+select f.codigo, f.nombre from fabricante f left join producto p on f.codigo = p.codigo_fabricante where p.codigo_fabricante is null;
+select p.*, f.nombre from fabricante f join producto p on f.codigo = p.codigo_fabricante where f.nombre = "Lenovo";
+select * from producto where precio = (select p.precio from producto p join fabricante f on f.codigo = p.codigo_fabricante where f.nombre = "Lenovo" order by p.precio desc limit 1);
+select p.nombre from producto p join fabricante f on f.codigo = p.codigo_fabricante where f.nombre = "Lenovo" order by p.precio desc limit 1;
+select p.nombre from producto p join fabricante f on f.codigo = p.codigo_fabricante where f.nombre = "Hewlett-Packard" order by p.precio asc limit 1;
+select * from producto where precio >= (select p.precio from producto p join fabricante f on f.codigo = p.codigo_fabricante where f.nombre = "Lenovo" order by p.precio desc limit 1);
+select * from producto where precio >= (select avg(precio) from producto) and nombre = "Asus"; -- tots son menors, no hi ha asus de valor superior a 271.72 
+
+use universidad;
+select apellido1, apellido2, nombre from persona where tipo = "alumno" order by apellido1, apellido2, nombre;
+select nombre, apellido1, apellido2 from persona where telefono is null and tipo = "alumno";
+select * from persona where year(fecha_nacimiento) = "1999" and tipo = "alumno";
+select * from persona where tipo = "profesor" and telefono is null and nif like "%K"; 
+select * from asignatura where cuatrimestre = 1 and curso = 3 and id_grado = 7;
+select p.apellido1, p.apellido2, p.nombre, d.nombre as "departamento" from persona p right join profesor pr on p.id = pr.id_profesor join departamento d on d.id = pr.id_departamento order by p.apellido1 asc , p.apellido2 asc, p.nombre asc;
+select a.nombre, c.anyo_inicio, c.anyo_fin from  alumno_se_matricula_asignatura am join persona p on p.id= am.id_alumno join curso_escolar c on am.id_curso_escolar = c.id join asignatura a on am.id_asignatura = a.id where p.nif="26902806M";
+-- NO, departament es relaciona amb persona, persona amb assignatura, assignatura amb grau i ja esta
+select d.* from departamento d join asignatura a on d.id = a.id_grado join grado g on a.id_grado = g.id ;
