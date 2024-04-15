@@ -49,5 +49,16 @@ select * from persona where tipo = "profesor" and telefono is null and nif like 
 select * from asignatura where cuatrimestre = 1 and curso = 3 and id_grado = 7;
 select p.apellido1, p.apellido2, p.nombre, d.nombre as "departamento" from persona p right join profesor pr on p.id = pr.id_profesor join departamento d on d.id = pr.id_departamento order by p.apellido1 asc , p.apellido2 asc, p.nombre asc;
 select a.nombre, c.anyo_inicio, c.anyo_fin from  alumno_se_matricula_asignatura am join persona p on p.id= am.id_alumno join curso_escolar c on am.id_curso_escolar = c.id join asignatura a on am.id_asignatura = a.id where p.nif="26902806M";
--- NO, departament es relaciona amb persona, persona amb assignatura, assignatura amb grau i ja esta
-select d.* from departamento d join asignatura a on d.id = a.id_grado join grado g on a.id_grado = g.id ;
+select distinct d.nombre from departamento d  join profesor p on p.id_departamento=d.id  join asignatura a on a.id_profesor=p.id_profesor  join grado g on a.id_grado=g.id where g.nombre="Grado en Ingeniería Informática (Plan 2015)";
+select distinct p.* from persona p right join alumno_se_matricula_asignatura a on a.id_alumno=p.id right join curso_escolar c on a.id_curso_escolar=c.id where c.anyo_inicio="2018";
+-- Resol utilitzant left i right join
+select d.nombre, p.apellido1, p.apellido2, p.nombre from persona p left join profesor pr on pr.id_profesor=p.id left join departamento d on d.id=pr.id_departamento; 
+select pr.id_departamento, p.apellido1, p.apellido2, p.nombre from persona p left join profesor pr on pr.id_profesor=p.id where pr.id_departamento is null;
+select d.nombre from departamento d left join profesor pr on d.id=pr.id_departamento where pr.id_departamento is null;
+select p.apellido1, p.apellido2, p.nombre from persona p left join asignatura a on a.id_profesor=p.id where a.id is null;
+select a.nombre, p.id from asignatura a left join persona p on a.id_profesor=p.id where id_profesor is null;
+select * from departamento where id=( select distinct d.id from departamento d right join profesor pr on d.id=pr.id_departamento right join asignatura a on a.id_profesor=pr.id_profesor right join alumno_se_matricula_asignatura al on al.id_asignatura=a.id where al.id_curso_escolar is not null);
+-- consultes resum
+select count(id) as "número d'alumnes" from persona where tipo="alumno";
+select count(id) as "alumnes del 1999" from persona where year(fecha_nacimiento)="1999";
+select count(pr.id_profesor) as "número de profesores", d.nombre from departamento d right join profesor pr on pr.id_departamento=d.id group by d.nombre order by count(pr.id_profesor) desc;
