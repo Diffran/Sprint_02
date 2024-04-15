@@ -57,8 +57,12 @@ select pr.id_departamento, p.apellido1, p.apellido2, p.nombre from persona p lef
 select d.nombre from departamento d left join profesor pr on d.id=pr.id_departamento where pr.id_departamento is null;
 select p.apellido1, p.apellido2, p.nombre from persona p left join asignatura a on a.id_profesor=p.id where a.id is null;
 select a.nombre, p.id from asignatura a left join persona p on a.id_profesor=p.id where id_profesor is null;
-select * from departamento where id=( select distinct d.id from departamento d right join profesor pr on d.id=pr.id_departamento right join asignatura a on a.id_profesor=pr.id_profesor right join alumno_se_matricula_asignatura al on al.id_asignatura=a.id where al.id_curso_escolar is not null);
+select * from departamento where id!=(select distinct d.id from departamento d right join profesor pr on d.id=pr.id_departamento right join asignatura a on a.id_profesor=pr.id_profesor right join alumno_se_matricula_asignatura al on al.id_asignatura=a.id where al.id_curso_escolar is not null);
 -- consultes resum
 select count(id) as "número d'alumnes" from persona where tipo="alumno";
-select count(id) as "alumnes del 1999" from persona where year(fecha_nacimiento)="1999";
+select count(id) as "alumnos del 1999" from persona where year(fecha_nacimiento)="1999";
 select count(pr.id_profesor) as "número de profesores", d.nombre from departamento d right join profesor pr on pr.id_departamento=d.id group by d.nombre order by count(pr.id_profesor) desc;
+select g.nombre, count(a.id) as "número asignaturas" from grado g left join asignatura a on a.id_grado=g.id group by g.nombre having count(a.id)>40;
+select g.nombre,a.tipo, sum(a.creditos) as "número de creditos" from grado g left join asignatura a on a.id_grado=g.id group by a.tipo, g.nombre having a.tipo is not null order by g.nombre;
+select c.anyo_inicio as curso, count(distinct al.id_alumno) as "número de alumno inscritos" from alumno_se_matricula_asignatura al join curso_escolar c on c.id=al.id_curso_escolar group by al.id_curso_escolar;
+select count(a.id) as "número de asignaturas" from asignatura a
