@@ -65,4 +65,6 @@ select count(pr.id_profesor) as "número de profesores", d.nombre from departame
 select g.nombre, count(a.id) as "número asignaturas" from grado g left join asignatura a on a.id_grado=g.id group by g.nombre having count(a.id)>40;
 select g.nombre,a.tipo, sum(a.creditos) as "número de creditos" from grado g left join asignatura a on a.id_grado=g.id group by a.tipo, g.nombre having a.tipo is not null order by g.nombre;
 select c.anyo_inicio as curso, count(distinct al.id_alumno) as "número de alumno inscritos" from alumno_se_matricula_asignatura al join curso_escolar c on c.id=al.id_curso_escolar group by al.id_curso_escolar;
-select count(a.id) as "número de asignaturas" from asignatura a
+select p.id, p.nombre, p.apellido1, p.apellido2, count(a.id) as "número de asignaturas"from asignatura a right join persona p on a.id_profesor=p.id where p.tipo = "profesor" group by p.id order by  count(a.id) desc;
+select * from persona where tipo="alumno"  order by fecha_nacimiento desc limit 1;
+-- no he fet la última
