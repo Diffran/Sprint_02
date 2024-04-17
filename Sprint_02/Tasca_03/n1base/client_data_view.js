@@ -1,0 +1,1 @@
+db.createCollection('client_data_view', {validator: {$jsonSchema: {bsonType: 'object',title: 'client_data_view'}}});
