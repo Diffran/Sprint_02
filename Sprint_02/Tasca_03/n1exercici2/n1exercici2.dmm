@@ -48,7 +48,7 @@
 					"nn": true,
 					"list": false,
 					"comment": "",
-					"data": "",
+					"data": "['Plastic', 'Metallic', 'Floating']",
 					"enum": "'Plastic', 'Metallic', 'Floating'",
 					"validation": "",
 					"pattern": false,
@@ -661,7 +661,7 @@
 		"def_collation": "",
 		"def_others": "",
 		"connectionVersion": "",
-		"lastSaved": 1713431208291
+		"lastSaved": 1713432608866
 	},
 	"otherObjects": {},
 	"diagrams": {
@@ -679,10 +679,10 @@
 			"diagramItems": {
 				"a9ab3fb8-05c5-4f7a-b9d6-de90fb5fd8ec": {
 					"referencedItemId": "a9ab3fb8-05c5-4f7a-b9d6-de90fb5fd8ec",
-					"x": 115,
-					"y": 98,
+					"x": 116,
+					"y": 97,
 					"gHeight": 532,
-					"gWidth": 218,
+					"gWidth": 344,
 					"color": "#ffffff",
 					"background": "#03a9f4",
 					"resized": true,
@@ -765,7 +765,7 @@
 			"showLineCaptions": false,
 			"showColumns": true,
 			"showColumnDataTypes": true,
-			"showSampleData": false,
+			"showSampleData": true,
 			"showTableIndexes": true,
 			"showTableDescriptions": false,
 			"showRelations": true,
