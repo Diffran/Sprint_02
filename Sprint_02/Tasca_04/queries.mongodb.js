@@ -23,7 +23,12 @@ db.Restaurant.find({ $or: [ { $and: [ { name: { $regex: "Fish" } }, { cuisine: {
 db.Restaurant.find({grades:{$elemMatch: {"grade": "A","score": 11,"date": ISODate("2014-08-11T00:00:00Z")}}},{ restaurant_id: 1, name: 1, grades:1});
 db.Restaurant.find({"grades.1.grade": "A","grades.1.score": 9,"grades.1.date": ISODate("2014-08-11T00:00:00Z")},{ restaurant_id: 1, name: 1, grades:1});
 db.Restaurant.find({"address.coord.1":{$gt:42, $lt:52}},{restaurant_id:1,name:1,address:1,borough:1});
-db.Restaurant.find({},{name:1, _id:0}).sort({$strcasecmp:["$name","ASC"]});
-//db.Restaurant.find({},{name:1, _id:0});
-
+db.Restaurant.find().sort({name:1});
+db.Restaurant.find().sort({name:-1});
+db.Restaurant.find().sort({cuisine:1,borough:-1});
+db.Restaurant.find({"address.street":{ $exists: false } });
+db.Restaurant.find({"address.coord":{$elemMatch : {$type:"double"}}});
+db.Restaurant.find({ "grades.score": { $mod: [7, 0] } }, { restaurant_id: 1, name: 1, grades: 1 });
+db.Restaurant.find({name:{$regex:"mon"}},{name:1, borough:1,"address.coord":1, cuisine:1});
+db.Restaurant.find({name:{$regex:"^Mad"}},{name:1, borough:1,"address.coord":1, cuisine:1});
 
