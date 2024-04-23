@@ -19,7 +19,11 @@ db.Restaurant.find({borough:"Bronx","cuisine":{$in:["American","Chinese", "Ameri
 db.Restaurant.find({borough:{$in:["Staten Island", "Queens", "Bronx","Brooklyn"]}},{restaurant_id:1, name:1, borough:1, cuisine:1, _id:0});
 db.Restaurant.find({borough:{$nin:["Staten Island", "Queens", "Bronx","Brooklyn"]}},{restaurant_id:1, name:1, borough:1, cuisine:1, _id:0});
 db.Restaurant.find({"grades.score":{$lt:10}},{restaurant_id:1, name:1, borough:1, cuisine:1, _id:0, "grades.score":1});
-db.Restaurant.find({name: {$regex: "Fish"}, cuisine:{$nin:["American ","Chinese"]}, },{restaurant_id:1, name:1, borough:1, cuisine:1, _id:0});
-//db.Restaurant.find();
+db.Restaurant.find({ $or: [ { $and: [ { name: { $regex: "Fish" } }, { cuisine: { $nin: ["American", "Chinese"] } } ] }, { name: { $regex: "^Wil" } } ] }, { restaurant_id: 1, name: 1, borough: 1, cuisine: 1, _id: 0 });
+db.Restaurant.find({grades:{$elemMatch: {"grade": "A","score": 11,"date": ISODate("2014-08-11T00:00:00Z")}}},{ restaurant_id: 1, name: 1, grades:1});
+db.Restaurant.find({"grades.1.grade": "A","grades.1.score": 9,"grades.1.date": ISODate("2014-08-11T00:00:00Z")},{ restaurant_id: 1, name: 1, grades:1});
+db.Restaurant.find({"address.coord.1":{$gt:42, $lt:52}},{restaurant_id:1,name:1,address:1,borough:1});
+db.Restaurant.find({},{name:1, _id:0}).sort({$strcasecmp:["$name","ASC"]});
+//db.Restaurant.find({},{name:1, _id:0});
 
 
