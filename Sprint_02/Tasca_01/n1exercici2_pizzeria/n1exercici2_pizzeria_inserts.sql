@@ -71,28 +71,25 @@ INSERT INTO CLIENT (nom, cogoms, telefon, id_adreça) VALUES
 ('Luis', 'Fernández', 612345678, 24), 
 ('Lucía', 'González', 613456789, 25); 
 
+INSERT INTO BEGUDA (id_beguda) VALUES 
+(1),
+(2),
+(3);
 
-INSERT INTO HAMBURGUESA (id_hamburguesa, nom, descripcio, imatge, preu) VALUES 
-(1, 'Classic Burger', 'Hamburguesa con lechuga, tomate, cebolla', NULL, 8.99),
-(2, 'Bacon Cheeseburger', 'Hamburguesa con bacon, lechuga, tomate', NULL, 10.99);
+INSERT INTO PRODUCTE (`nom`, `descripcio`, `imatge`, `preu`, `id_beguda`, `id_pizza`, `id_hamburguesa`) VALUES 
+('Pizza Margarita', 'Deliciosa pizza con salsa de tomate, mozzarella y albahaca fresca', NULL, 8.99, NULL, NULL, NULL),
+('Hamburguesa Clásica', 'Jugosa hamburguesa con carne de res, lechuga, tomate y queso cheddar', NULL, 6.49, NULL, NULL, NULL),
+('Coca-Cola', 'Refresco de cola refrescante', NULL, 1.99, 1, NULL, NULL),
+('Agua Mineral', 'Agua mineral natural en botella', NULL, 0.99, 2, NULL, NULL),
+('Pizza Hawaiana', 'Pizza con salsa de tomate, mozzarella, jamón y piña', NULL, 9.49, NULL, NULL, NULL),
+('Hamburguesa BBQ', 'Hamburguesa con salsa barbacoa, cebolla caramelizada y queso ahumado', NULL, 7.99, NULL, NULL, NULL),
+('Sprite', 'Refresco de lima-limón', NULL, 1.99, 3, NULL, NULL),
+('Té Helado', 'Refresco de té helado con sabor a limón', NULL, 2.49, NULL, NULL, NULL),
+('Pizza Vegetariana', 'Pizza con salsa de tomate, mozzarella y una variedad de vegetales frescos', NULL, 10.99, NULL, NULL, NULL),
+('Hamburguesa Vegana', 'Hamburguesa de quinoa y lentejas con aguacate y rúcula', NULL, 8.99, NULL, NULL, NULL);
 
 
-INSERT INTO BEGUDA (id_beguda, nom, descripcio, imatge, preu) VALUES 
-(1, 'Refresco de Cola', 'Refresco carbonatado sabor cola.', NULL, 1.99),
-(2, 'Agua Mineral', 'Agua mineral natural en botella.', NULL, 0.99),
-(3, 'Zumo de Naranja', 'Zumo natural de naranja recién exprimido.', NULL, 2.49);
 
-
-INSERT INTO CATEGORIA (nom) VALUES 
-('Vegetariana'),
-('Blanca');
-
--- Crear 4 pizzas en la tabla PIZZA
-INSERT INTO PIZZA (id_pizza, nom, descripcio, imatge, preu, id_categoria) VALUES 
-(1, 'Margarita', 'Tomate, mozzarella y albahaca.', NULL, 8.99, 2), -- Categoría Blanca
-(2, 'Hawaiana', ' jamón cocido y piña.', NULL, 9.99, 2), -- Categoría Blanca
-(3, 'Vegetariana', 'champiñones, pimientos, cebolla', NULL, 10.99, 1), -- Categoría Vegetariana
-(4, 'Cuatro Quesos', 'gorgonzola, provolone y parmesano.', NULL, 11.99, 2); -- Categoría Blanca
 
 
 INSERT INTO COMANDA (data, tipus, quantitat_pizza, quantitat_hamburguesa, quantitat_beguda, preu_total, id_botiga, id_client) VALUES 
@@ -115,23 +112,23 @@ INSERT INTO COMANDA (data, tipus, quantitat_pizza, quantitat_hamburguesa, quanti
 
 
 
-INSERT INTO LINEA_COMANDA (id_comanda,id_hamburguesa, id_beguda, id_pizza) VALUES
-(5, NULL, 1, NULL), 
-( 1, NULL, 3, NULL),  
-( 2,NULL, 2, NULL),   
-( 5,NULL, NULL, 3),    
-( 6,NULL, 1, NULL),
-( 7,NULL, 2, NULL), 
-( 2,NULL, 3, NULL),    
-( 8,2, NULL, NULL), 
-( 9,NULL, 3, NULL),
-( 10,NULL, 2, NULL),    
-( 11,NULL, NULL, 4),   
-( 11,NULL, NULL, 2),    
-( 3,NULL, 2, NULL), 
-( 12,2, NULL, NULL), 
-( 13,NULL, 1, NULL), 
-( 13, NULL, 1, NULL);    
+INSERT INTO LINEA_COMANDA (id_comanda, id_producte) VALUES
+(5,3), 
+(1,4),  
+(2,7),   
+(5,4),    
+(6,8),
+(7,10), 
+(2,3),    
+(8,7), 
+(9,1),
+(10,2),    
+(11,4),   
+(11,6),    
+(3,2), 
+(12,4), 
+(13,4), 
+(13,9);    
 
 
 INSERT INTO REPARTO (lliurament, id_comanda, id_empleat) VALUES

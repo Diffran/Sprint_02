@@ -114,10 +114,10 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`COMANDA` (
   `id_comanda` INT NOT NULL AUTO_INCREMENT,
   `data` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `tipus` ENUM('domicili', 'botiga') NOT NULL,
-  `quantitat_pizza` INT NOT NULL,
-  `quantitat_hamburguesa` INT NOT NULL,
-  `quantitat_beguda` INT NOT NULL,
-  `preu_total` DOUBLE NOT NULL,
+  `quantitat_pizza` INT NULL,
+  `quantitat_hamburguesa` INT NULL,
+  `quantitat_beguda` INT NULL,
+  `preu_total` DOUBLE NULL,
   `id_botiga` INT NOT NULL,
   `id_client` INT NOT NULL,
   PRIMARY KEY (`id_comanda`, `id_client`),
@@ -137,34 +137,13 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `n1exercici2_pizzeria`.`HAMBURGUESA`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`HAMBURGUESA` ;
-
-CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`HAMBURGUESA` (
-  `id_hamburguesa` INT NOT NULL,
-  `nom` VARCHAR(45) NOT NULL,
-  `descripcio` VARCHAR(45) NOT NULL,
-  `imatge` BLOB NULL,
-  `preu` DOUBLE NOT NULL,
-  PRIMARY KEY (`id_hamburguesa`),
-  UNIQUE INDEX `nom_UNIQUE` (`nom` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `n1exercici2_pizzeria`.`BEGUDA`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`BEGUDA` ;
 
 CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`BEGUDA` (
   `id_beguda` INT NOT NULL,
-  `nom` VARCHAR(45) NOT NULL,
-  `descripcio` VARCHAR(45) NOT NULL,
-  `imatge` BLOB NULL,
-  `preu` DOUBLE NOT NULL,
-  PRIMARY KEY (`id_beguda`),
-  UNIQUE INDEX `nom_UNIQUE` (`nom` ASC) )
+  PRIMARY KEY (`id_beguda`))
 ENGINE = InnoDB;
 
 
@@ -187,17 +166,59 @@ DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`PIZZA` ;
 
 CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`PIZZA` (
   `id_pizza` INT NOT NULL,
-  `nom` VARCHAR(45) NOT NULL,
-  `descripcio` VARCHAR(45) NOT NULL,
-  `imatge` BLOB NULL,
-  `preu` DOUBLE NOT NULL,
-  `id_categoria` INT NOT NULL,
-  PRIMARY KEY (`id_pizza`, `id_categoria`),
-  UNIQUE INDEX `nom_UNIQUE` (`nom` ASC) ,
+  `id_categoria` INT NULL,
+  PRIMARY KEY (`id_pizza`),
   INDEX `fk_PIZZA_CATEGORIA_idx` (`id_categoria` ASC) ,
   CONSTRAINT `fk_PIZZA_CATEGORIA`
     FOREIGN KEY (`id_categoria`)
     REFERENCES `n1exercici2_pizzeria`.`CATEGORIA` (`id_categoria`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `n1exercici2_pizzeria`.`HAMBURGUESA`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`HAMBURGUESA` ;
+
+CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`HAMBURGUESA` (
+  `id_hamburguesa` INT NOT NULL,
+  PRIMARY KEY (`id_hamburguesa`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `n1exercici2_pizzeria`.`PRODUCTE`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`PRODUCTE` ;
+
+CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`PRODUCTE` (
+  `id_producte` INT NOT NULL AUTO_INCREMENT,
+  `nom` VARCHAR(45) NOT NULL,
+  `descripcio` VARCHAR(200) NOT NULL,
+  `imatge` BLOB NULL,
+  `preu` DOUBLE NOT NULL,
+  `id_beguda` INT NULL,
+  `id_pizza` INT NULL,
+  `id_hamburguesa` INT NULL,
+  PRIMARY KEY (`id_producte`),
+  INDEX `fk_PRODUCTE_BEGUDA1_idx` (`id_beguda` ASC) ,
+  INDEX `fk_PRODUCTE_PIZZA1_idx` (`id_pizza` ASC) ,
+  INDEX `fk_PRODUCTE_HAMBURGUESA1_idx` (`id_hamburguesa` ASC) ,
+  CONSTRAINT `fk_PRODUCTE_BEGUDA1`
+    FOREIGN KEY (`id_beguda`)
+    REFERENCES `n1exercici2_pizzeria`.`BEGUDA` (`id_beguda`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PRODUCTE_PIZZA1`
+    FOREIGN KEY (`id_pizza`)
+    REFERENCES `n1exercici2_pizzeria`.`PIZZA` (`id_pizza`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PRODUCTE_HAMBURGUESA1`
+    FOREIGN KEY (`id_hamburguesa`)
+    REFERENCES `n1exercici2_pizzeria`.`HAMBURGUESA` (`id_hamburguesa`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -211,32 +232,18 @@ DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`LINEA_COMANDA` ;
 CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`LINEA_COMANDA` (
   `id_linea_comanda` INT NOT NULL AUTO_INCREMENT,
   `id_comanda` INT NOT NULL,
-  `id_hamburguesa` INT NULL,
-  `id_beguda` INT NULL,
-  `id_pizza` INT NULL,
-  PRIMARY KEY (`id_linea_comanda`, `id_comanda`),
+  `id_producte` INT NOT NULL,
+  PRIMARY KEY (`id_linea_comanda`, `id_comanda`, `id_producte`),
   INDEX `fk_LINEA_COMANDA_COMANDA1_idx` (`id_comanda` ASC) ,
-  INDEX `fk_LINEA_COMANDA_HAMBURGUESA1_idx` (`id_hamburguesa` ASC) ,
-  INDEX `fk_LINEA_COMANDA_BEGUDA1_idx` (`id_beguda` ASC) ,
-  INDEX `fk_LINEA_COMANDA_PIZZA1_idx` (`id_pizza` ASC) ,
+  INDEX `fk_LINEA_COMANDA_PRODUCTE1_idx` (`id_producte` ASC) ,
   CONSTRAINT `fk_LINEA_COMANDA_COMANDA1`
     FOREIGN KEY (`id_comanda`)
     REFERENCES `n1exercici2_pizzeria`.`COMANDA` (`id_comanda`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_LINEA_COMANDA_HAMBURGUESA1`
-    FOREIGN KEY (`id_hamburguesa`)
-    REFERENCES `n1exercici2_pizzeria`.`HAMBURGUESA` (`id_hamburguesa`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_LINEA_COMANDA_BEGUDA1`
-    FOREIGN KEY (`id_beguda`)
-    REFERENCES `n1exercici2_pizzeria`.`BEGUDA` (`id_beguda`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_LINEA_COMANDA_PIZZA1`
-    FOREIGN KEY (`id_pizza`)
-    REFERENCES `n1exercici2_pizzeria`.`PIZZA` (`id_pizza` )
+  CONSTRAINT `fk_LINEA_COMANDA_PRODUCTE1`
+    FOREIGN KEY (`id_producte`)
+    REFERENCES `n1exercici2_pizzeria`.`PRODUCTE` (`id_producte`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -278,7 +285,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `n1exercici2_pizzeria`.`REPARTO` ;
 
 CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`REPARTO` (
-  `id_reparto` INT NOT NULL auto_increment,
+  `id_reparto` INT NOT NULL AUTO_INCREMENT,
   `lliurament` DATETIME NULL DEFAULT CURRENT_TIMESTAMP,
   `id_comanda` INT NOT NULL,
   `id_empleat` INT NOT NULL,
@@ -296,6 +303,8 @@ CREATE TABLE IF NOT EXISTS `n1exercici2_pizzeria`.`REPARTO` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
 
 
 
